@@ -1,4 +1,4 @@
-package com.util;
+ package com.util;
 
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
@@ -14,16 +14,16 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 /**
  * 
- * @author ¸ßº×
+ * @author é«˜é¹¤
  *
- * 2016Äê6ÔÂ4ÈÕ
+ * 2016å¹´6æœˆ4æ—¥
  * 
- * ×÷ÓÃ:¼ÓÃÜ¹¤¾ßÀà1
+ * ä½œç”¨:åŠ å¯†å·¥å…·ç±»1
  *
  */
 public class DecriptTest {
    /**
-    * SHA1¼ÓÃÜ
+    * SHA1åŠ å¯†
     * @param decript
     * @return
     */
@@ -35,7 +35,7 @@ public class DecriptTest {
 			byte messageDigest[] = digest.digest();
 			// Create Hex String
 			StringBuffer hexString = new StringBuffer();
-			// ×Ö½ÚÊı×é×ª»»Îª Ê®Áù½øÖÆ Êı
+			// å­—èŠ‚æ•°ç»„è½¬æ¢ä¸º åå…­è¿›åˆ¶ æ•°
 			for (int i = 0; i < messageDigest.length; i++) {
 				String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
 				if (shaHex.length() < 2) {
@@ -59,7 +59,7 @@ public class DecriptTest {
 			byte messageDigest[] = digest.digest();
 			// Create Hex String
 			StringBuffer hexString = new StringBuffer();
-			// ×Ö½ÚÊı×é×ª»»Îª Ê®Áù½øÖÆ Êı
+			// å­—èŠ‚æ•°ç»„è½¬æ¢ä¸º åå…­è¿›åˆ¶ æ•°
 			for (int i = 0; i < messageDigest.length; i++) {
 				String shaHex = Integer.toHexString(messageDigest[i] & 0xFF);
 				if (shaHex.length() < 2) {
@@ -77,15 +77,15 @@ public class DecriptTest {
 
 	public static String MD5(String input) {
 		try {
-			// »ñµÃMD5ÕªÒªËã·¨µÄ MessageDigest ¶ÔÏó
+			// è·å¾—MD5æ‘˜è¦ç®—æ³•çš„ MessageDigest å¯¹è±¡
 			MessageDigest mdInst = MessageDigest.getInstance("MD5");
-			// Ê¹ÓÃÖ¸¶¨µÄ×Ö½Ú¸üĞÂÕªÒª
+			// ä½¿ç”¨æŒ‡å®šçš„å­—èŠ‚æ›´æ–°æ‘˜è¦
 			mdInst.update(input.getBytes());
-			// »ñµÃÃÜÎÄ
+			// è·å¾—å¯†æ–‡
 			byte[] md = mdInst.digest();
-			// °ÑÃÜÎÄ×ª»»³ÉÊ®Áù½øÖÆµÄ×Ö·û´®ĞÎÊ½
+			// æŠŠå¯†æ–‡è½¬æ¢æˆåå…­è¿›åˆ¶çš„å­—ç¬¦ä¸²å½¢å¼
 			StringBuffer hexString = new StringBuffer();
-			// ×Ö½ÚÊı×é×ª»»Îª Ê®Áù½øÖÆ Êı
+			// å­—èŠ‚æ•°ç»„è½¬æ¢ä¸º åå…­è¿›åˆ¶ æ•°
 			for (int i = 0; i < md.length; i++) {
 				String shaHex = Integer.toHexString(md[i] & 0xFF);
 				if (shaHex.length() < 2) {
@@ -101,12 +101,12 @@ public class DecriptTest {
 	}
 
 	/**
-	 * ¼ÓÃÜ
+	 * åŠ å¯†
 	 * 
 	 * @param content
-	 *            ĞèÒª¼ÓÃÜµÄÄÚÈİ
+	 *            éœ€è¦åŠ å¯†çš„å†…å®¹
 	 * @param password
-	 *            ¼ÓÃÜÃÜÂë
+	 *            åŠ å¯†å¯†ç 
 	 * @return
 	 */
 	public static byte[] encryptAES(String content, String password) {
@@ -116,11 +116,11 @@ public class DecriptTest {
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
-			Cipher cipher = Cipher.getInstance("AES");// ´´½¨ÃÜÂëÆ÷
+			Cipher cipher = Cipher.getInstance("AES");// åˆ›å»ºå¯†ç å™¨
 			byte[] byteContent = content.getBytes("utf-8");
-			cipher.init(Cipher.ENCRYPT_MODE, key);// ³õÊ¼»¯
+			cipher.init(Cipher.ENCRYPT_MODE, key);// åˆå§‹åŒ–
 			byte[] result = cipher.doFinal(byteContent);
-			return result; // ¼ÓÃÜ
+			return result; // åŠ å¯†
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
@@ -138,12 +138,12 @@ public class DecriptTest {
 	}
 
 	/**
-	 * ½âÃÜ
+	 * è§£å¯†
 	 * 
 	 * @param content
-	 *            ´ı½âÃÜÄÚÈİ
+	 *            å¾…è§£å¯†å†…å®¹
 	 * @param password
-	 *            ½âÃÜÃÜÔ¿
+	 *            è§£å¯†å¯†é’¥
 	 * @return
 	 */
 	public static byte[] decryptAES(byte[] content, String password) {
@@ -153,10 +153,10 @@ public class DecriptTest {
 			SecretKey secretKey = kgen.generateKey();
 			byte[] enCodeFormat = secretKey.getEncoded();
 			SecretKeySpec key = new SecretKeySpec(enCodeFormat, "AES");
-			Cipher cipher = Cipher.getInstance("AES");// ´´½¨ÃÜÂëÆ÷
-			cipher.init(Cipher.DECRYPT_MODE, key);// ³õÊ¼»¯
+			Cipher cipher = Cipher.getInstance("AES");// åˆ›å»ºå¯†ç å™¨
+			cipher.init(Cipher.DECRYPT_MODE, key);// åˆå§‹åŒ–
 			byte[] result = cipher.doFinal(content);
-			return result; // ¼ÓÃÜ
+			return result; // åŠ å¯†
 		} catch (NoSuchAlgorithmException e) {
 			e.printStackTrace();
 		} catch (NoSuchPaddingException e) {
@@ -172,7 +172,7 @@ public class DecriptTest {
 	}
 
 	/**
-	 * BASE64½âÃÜ
+	 * BASE64è§£å¯†
 	 * 
 	 * @param key
 	 * @return
@@ -184,7 +184,7 @@ public class DecriptTest {
 	}
 
 	/**
-	 * BASE64¼ÓÃÜ
+	 * BASE64åŠ å¯†
 	 * 
 	 * @param key
 	 * @return

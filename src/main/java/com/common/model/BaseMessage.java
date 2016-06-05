@@ -1,20 +1,19 @@
 package com.common.model;
 /**
  * 
- * @author ¸ßº×
- * 
- * @2016Äê6ÔÂ5ÈÕ
+ * @author é«˜é¹¤
  *
- * ×÷ÓÃ:Î¢ĞÅÏûÏ¢Àà
+ * 2016å¹´6æœˆ5æ—¥
  *
+ * ä½œç”¨:æ¶ˆæ¯åŸºç¡€ç±»
  */
 public abstract class BaseMessage {
-	private String ToUserName;//¿ª·¢ÕßÎ¢ĞÅºÅ
-	private String FromUserName;//·¢ËÍ·½ÕÊºÅ£¨Ò»¸öOpenID£©
-	private String CreateTime	;//ÏûÏ¢´´½¨Ê±¼ä £¨ÕûĞÍ£©
-	private String MsgType;//ÏûÏ¢ÀàĞÍ
-	//private String Content;//ÎÄ±¾ÏûÏ¢ÄÚÈİ
-	private String MsgId;//ÏûÏ¢id£¬64Î»ÕûĞÍ
+	private String ToUserName;//å¼€å‘è€…å¾®ä¿¡å·
+	private String FromUserName;//å‘é€æ–¹å¸å·ï¼ˆä¸€ä¸ªOpenIDï¼‰
+	private String CreateTime	;//æ¶ˆæ¯åˆ›å»ºæ—¶é—´ ï¼ˆæ•´å‹ï¼‰
+	private String MsgType;//æ¶ˆæ¯ç±»å‹
+	//private String Content;//æ–‡æœ¬æ¶ˆæ¯å†…å®¹
+	private String MsgId;//æ¶ˆæ¯idï¼Œ64ä½æ•´å‹
 	public String getToUserName() {
 		return ToUserName;
 	}

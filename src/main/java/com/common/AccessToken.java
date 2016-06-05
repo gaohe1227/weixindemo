@@ -1,25 +1,30 @@
 package com.common;
+
 /**
  * 
- * @author ¸ßº×
+ * @author é«˜é¹¤
  * 
- * @2016Äê6ÔÂ5ÈÕ
+ * @2016å¹´6æœˆ5æ—¥
  *
- * ×÷ÓÃ:access_tokenµÄ¹¤¾ßÀà
+ * 	ä½œç”¨:access_tokençš„å·¥å…·ç±»
  *
  */
 public class AccessToken {
-	private String access_token;//»ñÈ¡µ½µÄÆ¾Ö¤,Î¢ĞÅ¹«ÖÚºÅµÄÈ«¾ÖÎ¨Ò»½Ó¿Úµ÷ÓÃÆ¾¾İ
-	private String expires_in;//Æ¾Ö¤Ê§Ğ§ÊÂ¼ş
+	private String access_token;// è·å–åˆ°çš„å‡­è¯,å¾®ä¿¡å…¬ä¼—å·çš„å…¨å±€å”¯ä¸€æ¥å£è°ƒç”¨å‡­æ®
+	private String expires_in;// å‡­è¯å¤±æ•ˆäº‹ä»¶
+
 	public String getAccess_token() {
 		return access_token;
 	}
+
 	public void setAccess_token(String access_token) {
 		this.access_token = access_token;
 	}
+
 	public String getExpires_in() {
 		return expires_in;
 	}
+
 	public void setExpires_in(String expires_in) {
 		this.expires_in = expires_in;
 	}

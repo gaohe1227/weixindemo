@@ -1,15 +1,13 @@
 package com.common.model;
 
 import java.io.Serializable;
-
 /**
  * 
- * @author ¸ßº×
- * 
- * @2016Äê6ÔÂ5ÈÕ
+ * @author é«˜é¹¤
  *
- * ×÷ÓÃ:Í¼Æ¬ÏûÏ¢
+ * 2016å¹´6æœˆ5æ—¥
  *
+ * ä½œç”¨:å›¾ç‰‡æ¶ˆæ¯
  */
 public class ImageMessage extends BaseMessage implements Serializable{
  

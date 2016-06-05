@@ -1,48 +1,58 @@
 package com.common.model;
 
 public class TextMessage {
-private String ToUserName;//¿ª·¢ÕßÎ¢ĞÅºÅ
-private String FromUserName;//·¢ËÍ·½ÕÊºÅ£¨Ò»¸öOpenID£©
-private String CreateTime	;//ÏûÏ¢´´½¨Ê±¼ä £¨ÕûĞÍ£©
-private String MsgType;//ÏûÏ¢ÀàĞÍ
-private String Content;//ÎÄ±¾ÏûÏ¢ÄÚÈİ
-private String MsgId;//ÏûÏ¢id£¬64Î»ÕûĞÍ
-public String getToUserName() {
-	return ToUserName;
-}
-public void setToUserName(String toUserName) {
-	ToUserName = toUserName;
-}
-public String getFromUserName() {
-	return FromUserName;
-}
-public void setFromUserName(String fromUserName) {
-	FromUserName = fromUserName;
-}
- 
- 
-public String getCreateTime() {
-	return CreateTime;
-}
-public void setCreateTime(String createTime) {
-	CreateTime = createTime;
-}
-public String getMsgType() {
-	return MsgType;
-}
-public void setMsgType(String msgType) {
-	MsgType = msgType;
-}
-public String getContent() {
-	return Content;
-}
-public void setContent(String content) {
-	Content = content;
-}
-public String getMsgId() {
-	return MsgId;
-}
-public void setMsgId(String msgId) {
-	MsgId = msgId;
-}
+	private String ToUserName;// å¼€å‘è€…å¾®ä¿¡å·
+	private String FromUserName;// å‘é€æ–¹å¸å·ï¼ˆä¸€ä¸ªOpenIDï¼‰
+	private String CreateTime;// æ¶ˆæ¯åˆ›å»ºæ—¶é—´ ï¼ˆæ•´å‹ï¼‰
+	private String MsgType;// æ¶ˆæ¯ç±»å‹
+	private String Content;// æ–‡æœ¬æ¶ˆæ¯å†…å®¹
+	private String MsgId;// æ¶ˆæ¯idï¼Œ64ä½æ•´å‹
+
+	public String getToUserName() {
+		return ToUserName;
+	}
+
+	public void setToUserName(String toUserName) {
+		ToUserName = toUserName;
+	}
+
+	public String getFromUserName() {
+		return FromUserName;
+	}
+
+	public void setFromUserName(String fromUserName) {
+		FromUserName = fromUserName;
+	}
+
+	public String getCreateTime() {
+		return CreateTime;
+	}
+
+	public void setCreateTime(String createTime) {
+		CreateTime = createTime;
+	}
+
+	public String getMsgType() {
+		return MsgType;
+	}
+
+	public void setMsgType(String msgType) {
+		MsgType = msgType;
+	}
+
+	public String getContent() {
+		return Content;
+	}
+
+	public void setContent(String content) {
+		Content = content;
+	}
+
+	public String getMsgId() {
+		return MsgId;
+	}
+
+	public void setMsgId(String msgId) {
+		MsgId = msgId;
+	}
 }

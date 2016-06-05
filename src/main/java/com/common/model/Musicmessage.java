@@ -4,11 +4,11 @@ import java.io.Serializable;
 
 /**
  * 
- * @author ¸ßº×
+ * @author é«˜é¹¤
  * 
- * @2016Äê6ÔÂ5ÈÕ
+ * @2016å¹´6æœˆ5æ—¥
  *
- * ×÷ÓÃ:ÒôÀÖÏûÏ¢
+ * ä½œç”¨:éŸ³ä¹æ¶ˆæ¯
  *
  */
 public class Musicmessage extends BaseMessage implements Serializable{

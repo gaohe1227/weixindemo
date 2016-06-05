@@ -1,4 +1,4 @@
-package com.common;
+ package com.common;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,28 +22,29 @@ import com.common.model.TextMessage;
 import com.thoughtworks.xstream.XStream;
 /**
  * 
- * @author ¸ßº×
+ * @author é«˜é¹¤
  *
- * 2016Äê6ÔÂ4ÈÕ
+ * 2016å¹´6æœˆ4æ—¥
  * 
- * ×÷ÓÃ:ÏûÏ¢´¦Àí¹¤¾ßÀà
+ * ä½œç”¨:æ¶ˆæ¯å¤„ç†å·¥å…·ç±»
  *
  */
 public class MessageUtil {
-	public static final String MESSAGE_TEXT="text";//ÎÄ±¾ÏûÏ¢
-	public static final String MESSAGE_IMAGE="image";//Í¼Æ¬ÏûÏ¢
-	public static final String MESSAGE_MUSIC="music";//ÓïÒôÏûÏ¢
-	public static final String MESSAGE_VOICE="voice";//ÓïÒôÏûÏ¢
-	public static final String MESSAGE_VEDIO="vedio";//ÊÓÆµÏûÏ¢
-	public static final String MESSAGE_SHORTVIDEO="shortvideo";//Ğ¡ÊÓÆµÏûÏ¢
-	public static final String MESSAGE_LOCATION="location";//µØÀíÎ»ÖÃÏûÏ¢
-	public static final String MESSAGE_LINK="link";//Á´½ÓÏûÏ¢t
-	public static final String MESSAGE_EVENT="event";//Ê±¼äÏûÏ¢
-	public static final String EVENT_SUBSCRIBE="subscribe";//É¨Ãè¶şÎ¬ÂëÊÂ¼ş
-	public static final String EVENT_CLICK="click";//ÇÃ»÷ÊÂ¼ş
-	public static final String EVENT_VIEW="VIEW";//²é¿´ÊÂ¼ş
+	public static final String MESSAGE_TEXT="text";//æ–‡æœ¬æ¶ˆæ¯
+	public static final String MESSAGE_IMAGE="image";//å›¾ç‰‡æ¶ˆæ¯
+	public static final String MESSAGE_MUSIC="music";//è¯­éŸ³æ¶ˆæ¯
+	public static final String MESSAGE_VOICE="voice";//è¯­éŸ³æ¶ˆæ¯
+	public static final String MESSAGE_VEDIO="vedio";//è§†é¢‘æ¶ˆæ¯
+	public static final String MESSAGE_SHORTVIDEO="shortvideo";//å°è§†é¢‘æ¶ˆæ¯
+	public static final String MESSAGE_LOCATION="location";//åœ°ç†ä½ç½®æ¶ˆæ¯
+	public static final String MESSAGE_LINK="link";//é“¾æ¥æ¶ˆæ¯t
+	public static final String MESSAGE_EVENT="event";//æ—¶é—´æ¶ˆæ¯
+	public static final String EVENT_SUBSCRIBE="subscribe";//æ‰«æäºŒç»´ç äº‹ä»¶
+	public static final String EVENT_CLICK="CLICK";//æ•²å‡»äº‹ä»¶
+	public static final String EVENT_VIEW="VIEW";//æŸ¥çœ‹äº‹ä»¶
+	public static final String MESSAGE_SCANCODE="scancode_push";
 	/**
-	 * ½âÎöÇëÇóÁ÷ÖĞµÄxmlÔªËØ,½«xml×ª»»Îªmap
+	 * è§£æè¯·æ±‚æµä¸­çš„xmlå…ƒç´ ,å°†xmlè½¬æ¢ä¸ºmap
 	 * @param request
 	 * @return
 	 * @throws IOException
@@ -51,11 +52,11 @@ public class MessageUtil {
 	 */
 	public static Map<String, String> xmlToMap(HttpServletRequest request) throws IOException, DocumentException {
 		Map<String, String> map = new HashMap<String, String>();
-		SAXReader saxReader = new SAXReader();// SAXReaderÖ÷ÒªÓÃí½âÎöxmlÎÄ¼ş
+		SAXReader saxReader = new SAXReader();// SAXReaderä¸»è¦ç”¨ä¾†è§£æxmlæ–‡ä»¶
 		InputStream in = request.getInputStream();
-		Document document = saxReader.read(in);// »ñÈ¡ÎÄµµ
-		Element root = document.getRootElement();// »ñÈ¡ÎÄµµ¸ùÔªËØ
-		List<Element> element = root.elements();// »ñÈ¡ÔªËØÁĞ±í;
+		Document document = saxReader.read(in);// è·å–æ–‡æ¡£
+		Element root = document.getRootElement();// è·å–æ–‡æ¡£æ ¹å…ƒç´ 
+		List<Element> element = root.elements();// è·å–å…ƒç´ åˆ—è¡¨;
 		for (Element e : element) {
 			map.put(e.getName(), e.getText());
 		}
@@ -63,39 +64,39 @@ public class MessageUtil {
 		return map;
 	}
 	/**
-	 * ½«ÎÄ±¾ÏûÏ¢¶ÔÏó×ª»»Îªxml
+	 * å°†æ–‡æœ¬æ¶ˆæ¯å¯¹è±¡è½¬æ¢ä¸ºxml
 	 * @param testMessage
 	 * @return
 	 */
 	public static String textMessageToXml(TextMessage testMessage) {
 		 XStream xStream=new XStream();
-		 xStream.alias("xml", TextMessage.class);//½«xmlµÄ¸ù½ÚµãÌæ»»Îªxml
+		 xStream.alias("xml", TextMessage.class);//å°†xmlçš„æ ¹èŠ‚ç‚¹æ›¿æ¢ä¸ºxml
 		return xStream.toXML(testMessage);
 	}
 	/**
-	 * ´¦Àí¹Ø×¢ÊÂ¼ş
+	 * å¤„ç†å…³æ³¨äº‹ä»¶
 	 * @return
 	 */
 	public static String menuText(){
 		StringBuffer buffer=new StringBuffer();
-		buffer.append("»¶Ó­ÄúµÄ¹Ø×¢!,Çë°´ÕÕÒÔÏÂ²Ù×÷:\n\n");
-		buffer.append("1.Ö÷²Ëµ¥£»\n");
-		buffer.append("2.ËæÒâ¡£\n");
-		buffer.append("»Ø¸´*µ÷³öÖ÷²Ëµ¥");
+		buffer.append("æ¬¢è¿æ‚¨çš„å…³æ³¨!,è¯·æŒ‰ç…§ä»¥ä¸‹æ“ä½œ:\n\n");
+		buffer.append("1.ä¸»èœå•ï¼›\n");
+		buffer.append("2.éšæ„ã€‚\n");
+		buffer.append("å›å¤*è°ƒå‡ºä¸»èœå•");
 		return buffer.toString();
 		
 	}
 	/**
-	 * Ö÷²Ëµ¥
-	 * @param toUserName:¿ª·¢Õß
-	 * @param fromUserName:ÓÃ»§
-	 * @param content:ÄÚÈİ
+	 * ä¸»èœå•
+	 * @param toUserName:å¼€å‘è€…
+	 * @param fromUserName:ç”¨æˆ·
+	 * @param content:å†…å®¹
 	 * @return
 	 */
 	public static String initText(String toUserName,String fromUserName,String content){
 		 TextMessage textMessage=new TextMessage();
 		 textMessage.setMsgType(MessageUtil.MESSAGE_TEXT);
-		 textMessage.setContent("Äú·¢ËÍµÄÏûÏ¢:"+content);
+		 textMessage.setContent("æ‚¨å‘é€çš„æ¶ˆæ¯:"+content);
 		 textMessage.setFromUserName(toUserName);
 		 textMessage.setToUserName(fromUserName);
 		 textMessage.setCreateTime(String.valueOf(new Date().getTime()));
@@ -105,26 +106,26 @@ public class MessageUtil {
 	
 	public static String firstMenu(){
 		StringBuffer buffer=new StringBuffer();
-		buffer.append("²âÊÔÎ¢ĞÅ¹«ÖÚºÅ¿ª·¢µÄ²Ëµ¥Ò»");
+		buffer.append("æµ‹è¯•å¾®ä¿¡å…¬ä¼—å·å¼€å‘çš„èœå•ä¸€");
 		 
 		return buffer.toString();
 	}
 
 	public static String secondMenu(){
 		StringBuffer buffer=new StringBuffer();
-		buffer.append("²âÊÔÎ¢ĞÅ¹«ÖÚºÅ¿ª·¢µÄ²Ëµ¥¶ş\n\n");
-		buffer.append("Ä½¿ÎÍøÑ§µÄ");
+		buffer.append("æµ‹è¯•å¾®ä¿¡å…¬ä¼—å·å¼€å‘çš„èœå•äºŒ\n\n");
+		buffer.append("æ…•è¯¾ç½‘å­¦çš„");
 		 
 		return buffer.toString();
 	}
 	
 	/**
 	 * /**
-	 * »Ø¸´Í¼Æ¬ÏûÏ¢
-	 * @param picUrl:Í¼Æ¬Á´½Ó
-	 * @param MediaId:Í¼Æ¬ÏûÏ¢Ã½Ìåid  
-	 * @param toUserName:¹«ÖÚºÅ¿ª·¢Õß
-	 * @param fromUserName :ÓÃ»§
+	 * å›å¤å›¾ç‰‡æ¶ˆæ¯
+	 * @param picUrl:å›¾ç‰‡é“¾æ¥
+	 * @param MediaId:å›¾ç‰‡æ¶ˆæ¯åª’ä½“id  
+	 * @param toUserName:å…¬ä¼—å·å¼€å‘è€…
+	 * @param fromUserName :ç”¨æˆ·
 	 * @return
 	 */
 	public static String intiImageMessage(String toUserName,String fromUserName,  String mediaId){
@@ -137,25 +138,25 @@ public class MessageUtil {
 		imageMessage.setCreateTime(String.valueOf(new Date().getTime()));
 		imageMessage.setImage(iamge);
 		 XStream xStream=new XStream();
-		 xStream.alias("xml", ImageMessage.class);//½«xmlµÄ¸ù½ÚµãÌæ»»Îªxml
+		 xStream.alias("xml", ImageMessage.class);//å°†xmlçš„æ ¹èŠ‚ç‚¹æ›¿æ¢ä¸ºxml
 		 return xStream.toXML(imageMessage);
 	}
 	/**
-	 * »Ø¸´ÒôÀÖÏûÏ¢
-	 * @param toUserName:¹«ÖÚºÅ¿ª·¢Õß
-	 * @param fromUserName :ÓÃ»§
-	 * @param thumbMediaId:ËõÂÔÍ¼id
-	 * @param musicurl:ÒôÀÖÂ·¾¶
+	 * å›å¤éŸ³ä¹æ¶ˆæ¯
+	 * @param toUserName:å…¬ä¼—å·å¼€å‘è€…
+	 * @param fromUserName :ç”¨æˆ·
+	 * @param thumbMediaId:ç¼©ç•¥å›¾id
+	 * @param musicurl:éŸ³ä¹è·¯å¾„
 	 * @return
 	 */
 	public static String intiMusicMessage(String toUserName, String fromUserName, String thumbMediaId,String musicurl) {
 		// TODO Auto-generated method stub
 		 Music music=new Music();
-		 music.setDescription("ÓÃÀ´²âÊÔµÄÒôÀÖ");
+		 music.setDescription("ç”¨æ¥æµ‹è¯•çš„éŸ³ä¹");
 		 music.setMusicUrl(musicurl);
 		 music.setHQMusicUrl(musicurl);
 		 music.setThumbMediaId(thumbMediaId);
-		 music.setTitle("ÒôÀÖÖ÷Ìâ");
+		 music.setTitle("éŸ³ä¹ä¸»é¢˜");
 		 
 	 
 		 Musicmessage musicmessage=new Musicmessage(); 
@@ -165,7 +166,7 @@ public class MessageUtil {
 		 musicmessage.setCreateTime(String.valueOf(new Date().getTime()));
 		 musicmessage.setMusic(music);
 		 XStream xStream=new XStream();
-		 xStream.alias("xml", Musicmessage.class);//½«xmlµÄ¸ù½ÚµãÌæ»»Îªxml
+		 xStream.alias("xml", Musicmessage.class);//å°†xmlçš„æ ¹èŠ‚ç‚¹æ›¿æ¢ä¸ºxml
 		 return xStream.toXML(musicmessage);
 	}
 }

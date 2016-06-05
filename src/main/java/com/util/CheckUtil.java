@@ -5,24 +5,24 @@ import java.util.Arrays;
 public class CheckUtil {
 	private static final String token="WXTEST";// 
 	 /**
-	  * ÑéÖ¤¼ÓÃÜÇ©Ãû
-	  * @param signature£º¼ÓÃÜÇ©Ãû
-	  * @param timestamp£ºÊ±¼ä´Á
-	  * @param nonce:Ëæ»úÊı
+	  * éªŒè¯åŠ å¯†ç­¾å
+	  * @param signatureï¼šåŠ å¯†ç­¾å
+	  * @param timestampï¼šæ—¶é—´æˆ³
+	  * @param nonce:éšæœºæ•°
 	  * @return
 	  */
 	public static boolean checkSignature(String signature, String timestamp, String nonce) {
 		// TODO Auto-generated method stub
 		String[] arr=new String[]{token,  timestamp,  nonce};
-		Arrays.sort(arr);//¶ÔÊı×é½øĞĞ×ÖµäÅÅĞò
+		Arrays.sort(arr);//å¯¹æ•°ç»„è¿›è¡Œå­—å…¸æ’åº
 		/**
-		 * Éú³É×Ö·û´®
+		 * ç”Ÿæˆå­—ç¬¦ä¸²
 		 */
 		StringBuffer content=new StringBuffer();
 		for(int i=0;i<arr.length;i++){
 			content.append(arr[i]);
 		}
-		String temp=DecriptTest.SHA1(content.toString());//sha1¼ÓÃÜ
+		String temp=DecriptTest.SHA1(content.toString());//sha1åŠ å¯†
 		return temp.equals(signature);
 	}
 

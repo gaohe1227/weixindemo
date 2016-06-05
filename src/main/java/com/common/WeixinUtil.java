@@ -15,6 +15,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
@@ -24,6 +25,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.model.Button;
+import com.common.model.ClickButton;
+import com.common.model.Menu;
+import com.common.model.ViewButton;
 
 /**
   * 
@@ -35,28 +40,32 @@ import com.alibaba.fastjson.JSONObject;
   *
   */
 public class WeixinUtil {
-	public static final String APPID="wxace26c73dbbcbfdc";
-	public static final String APPSECRET="fc5a1e018bec46954a0147885f7cd1af";
-	public static String ACCESS_TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	private static final String APPID="wxace26c73dbbcbfdc";
+	private static final String APPSECRET="fc5a1e018bec46954a0147885f7cd1af";
+	private static final String ACCESS_TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
 	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";//新增临时素材接口
+	private static final String CREATE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	private static final String QUERY_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+	private static final String DELETE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
 	/**
 	 * get请求
 	 * @param urlStr：url路径
 	 * @return
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
 	 */
-	public static JSONObject doGetStr(String urlStr){
+	public static JSONObject doGetStr(String urlStr) throws ClientProtocolException, IOException{
  
 		  CloseableHttpClient httpclient = HttpClients.createDefault();//创建HttpClient对象
 		  // 创建httpget.    
           HttpGet httpget = new HttpGet(urlStr);  
           System.out.println("executing request " + httpget.getURI());
           JSONObject jsonObject=null;
-          // 执行get请求.    
-          try {
+          // 执行post请求.    
+     
 			CloseableHttpResponse response = httpclient.execute(httpget);
 			 // 获取响应实体    
-            HttpEntity entity = response.getEntity(); 
-            System.out.println("--------------------------------------");  
+            HttpEntity entity = response.getEntity();  
             System.out.println(response.getStatusLine());    // 打印响应状态    
             if (entity != null) {  
                 // 打印响应内容长度    
@@ -66,11 +75,8 @@ public class WeixinUtil {
                 System.out.println("Response content: " +result);
                 jsonObject= JSONObject.parseObject(result); 
             }  
-            System.out.println("------------------------------------"+jsonObject);  
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+            
+		 
 		return jsonObject;
 	}
 	/**
@@ -81,17 +87,16 @@ public class WeixinUtil {
 	public static JSONObject doPostStr(String urlStr,String outStr){
  
 		  CloseableHttpClient httpclient = HttpClients.createDefault();//创建HttpClient对象
-		  // 创建httpget.    
+		  // 创建httppost.    
           HttpPost httpPost = new HttpPost(urlStr);  
           System.out.println("executing request " + httpPost.getURI());
           JSONObject jsonObject=null;
-          // 执行get请求.    
+          // 执行post请求.    
           try {
         	  httpPost.setEntity(new StringEntity(outStr,"UTF-8"));
 			CloseableHttpResponse response = httpclient.execute(httpPost);
 			 // 获取响应实体    
-            HttpEntity entity = response.getEntity(); 
-            System.out.println("--------------------------------------");  
+            HttpEntity entity = response.getEntity();  
             System.out.println(response.getStatusLine());    // 打印响应状态    
             if (entity != null) {  
                 // 打印响应内容长度    
@@ -100,8 +105,7 @@ public class WeixinUtil {
                 String result= EntityUtils.toString(entity,"UTF-8");
                 System.out.println("Response content: " +result);
                 jsonObject= JSONObject.parseObject(result); 
-            }  
-            System.out.println("------------------------------------"+jsonObject);  
+            }   
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -113,12 +117,17 @@ public class WeixinUtil {
 	 * @return
 	 */
 	public static AccessToken getAccessToken(){
-		AccessToken token=new AccessToken();
-		String url=WeixinUtil.ACCESS_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);//替换路径参数
-		JSONObject jsonObject=doGetStr(url);//发起get请求
-		if(null!=jsonObject){
-			token.setAccess_token(jsonObject.getString("access_token"));
-			token.setExpires_in(jsonObject.getString("expires_in"));
+		AccessToken token = new AccessToken();
+		String url = WeixinUtil.ACCESS_TOKEN_URL.replace("APPID", APPID).replace("APPSECRET", APPSECRET);// 替换路径参数
+		try {
+			JSONObject jsonObject = doGetStr(url);// 发起get请求
+			if (null != jsonObject) {
+				token.setAccess_token(jsonObject.getString("access_token"));
+				token.setExpires_in(jsonObject.getString("expires_in"));
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		return token;
 	}
@@ -222,6 +231,86 @@ public class WeixinUtil {
 		String mediaId = jsonObj.getString(typeName);//媒体文件上传后，获取时的唯一标识
 		return mediaId;
 	}
-	
-	
+
+	/**
+	 * 组装菜单
+	 * @return
+	 */
+	public static Menu initMenu(){
+		Menu menu = new Menu();
+		ClickButton button11 = new ClickButton();
+		button11.setName("click菜单");
+		button11.setType("click");
+		button11.setKey("11");
+		
+		ViewButton button21 = new ViewButton();
+		button21.setName("view菜单");
+		button21.setType("view");
+		button21.setUrl("http://www.imooc.com");
+		
+		ClickButton button31 = new ClickButton();
+		button31.setName("扫码事件");
+		button31.setType("scancode_push");
+		button31.setKey("31");
+		
+		ClickButton button32 = new ClickButton();
+		button32.setName("地理位置");
+		button32.setType("location_select");
+		button32.setKey("32");
+		
+		Button button = new Button();
+		button.setName("菜单");
+		button.setSub_button(new Button[]{button31,button32});
+		
+		menu.setButton(new Button[]{button11,button21,button});
+		return menu;
+	}
+	 /**
+	  * 创建菜单
+	  * @param menu:菜单xml
+	  * @param token:token值
+	  * @return
+	  */
+	public static int createMenu(String menu,String token){
+		int result = 0;
+		String url = CREATE_MENU_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject = doPostStr(url, menu);// 发送post请求
+		if (jsonObject != null) {
+			result = jsonObject.getIntValue("errcode");
+		}
+		return result;
+
+	}
+	 /**
+	  * 查询菜单
+	  * @param token:token
+	  * @return
+	  */
+	public static JSONObject queryMenu(String token){
+		String url=QUERY_MENU_URL.replace("ACCESS_TOKEN", token);
+		try {
+			JSONObject jsonObject=doGetStr(url);
+			return jsonObject;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
+	 /**
+	  * 删除菜单
+	  * @param token:token
+	  * @return
+	  */
+	public static JSONObject dekleteMenu(String token){
+		String url=DELETE_MENU_URL.replace("ACCESS_TOKEN", token);
+		try {
+			JSONObject jsonObject=doGetStr(url);
+			return jsonObject;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;
+	}
 }

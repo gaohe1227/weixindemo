@@ -1,18 +1,18 @@
-package com.common.model;
+package com.common.model; 
 
 /**
  * 
- * @author ¸ßº×
+ * @author é«˜é¹¤
  * 
- * @2016Äê6ÔÂ5ÈÕ
+ * @2016å¹´6æœˆ5æ—¥
  *
- * ×÷ÓÃ:ÒôÀÖÊµÌåÀà
+ * ä½œç”¨:éŸ³ä¹å®ä½“ç±»
  *
  */
 public class Music {
-	private String Title;// ÒôÀÖ±êÌâ
-	private String Description;// ÒôÀÖÃèÊö
-	private String MusicUrl;// ÒôÀÖÁ´½Ó
+	private String Title;// éŸ³ä¹æ ‡é¢˜
+	private String Description;// éŸ³ä¹æè¿°
+	private String MusicUrl;// éŸ³ä¹é“¾æ¥
 	public String getMusicUrl() {
 		return MusicUrl;
 	}
@@ -21,8 +21,8 @@ public class Music {
 		MusicUrl = musicUrl;
 	}
 
-	private String HQMusicUrl;// ¸ßÖÊÁ¿ÒôÀÖÁ´½Ó£¬WIFI»·¾³ÓÅÏÈÊ¹ÓÃ¸ÃÁ´½Ó²¥·ÅÒôÀÖ
-	private String ThumbMediaId;// ËõÂÔÍ¼µÄÃ½Ìåid£¬Í¨¹ıËØ²Ä¹ÜÀíÖĞµÄ½Ó¿ÚÉÏ´«¶àÃ½ÌåÎÄ¼ş£¬µÃµ½µÄid
+	private String HQMusicUrl;// é«˜è´¨é‡éŸ³ä¹é“¾æ¥ï¼ŒWIFIç¯å¢ƒä¼˜å…ˆä½¿ç”¨è¯¥é“¾æ¥æ’­æ”¾éŸ³ä¹
+	private String ThumbMediaId;// ç¼©ç•¥å›¾çš„åª’ä½“idï¼Œé€šè¿‡ç´ æç®¡ç†ä¸­çš„æ¥å£ä¸Šä¼ å¤šåª’ä½“æ–‡ä»¶ï¼Œå¾—åˆ°çš„id
 	public String getTitle() {
 		return Title;
 	}

@@ -1,4 +1,4 @@
-package com;
+  package com;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -50,11 +50,11 @@ public class Weixinservlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 	/*	response.getWriter().append("Served at: ").append(request.getContextPath());*/
-		System.out.println("Î¢ĞÅ¿ª·¢Æ½Ì¨");
-		String signature=request.getParameter("signature");//Î¢ĞÅ¼ÓÃÜÇ©Ãû£¬signature½áºÏÁË¿ª·¢ÕßÌîĞ´µÄtoken²ÎÊıºÍÇëÇóÖĞµÄtimestamp²ÎÊı¡¢nonce²ÎÊı¡£
-		String timestamp=request.getParameter("timestamp");//Ê±¼ä´Á
-		String nonce=request.getParameter("nonce");//Ëæ»úÊı
-		String echostr=request.getParameter("echostr");//Ëæ»ú×Ö·û´®
+		System.out.println("å¾®ä¿¡å¼€å‘å¹³å°");
+		String signature=request.getParameter("signature");//å¾®ä¿¡åŠ å¯†ç­¾åï¼Œsignatureç»“åˆäº†å¼€å‘è€…å¡«å†™çš„tokenå‚æ•°å’Œè¯·æ±‚ä¸­çš„timestampå‚æ•°ã€nonceå‚æ•°ã€‚
+		String timestamp=request.getParameter("timestamp");//æ—¶é—´æˆ³
+		String nonce=request.getParameter("nonce");//éšæœºæ•°
+		String echostr=request.getParameter("echostr");//éšæœºå­—ç¬¦ä¸²
 		PrintWriter writer=response.getWriter();
 		System.out.println("-----------"+CheckUtil.checkSignature(signature,timestamp,nonce));
 		if(CheckUtil.checkSignature(signature,timestamp,nonce)){
@@ -80,41 +80,60 @@ public class Weixinservlet extends HttpServlet {
 			String msgType=map.get("MsgType");
 			 System.out.println("--------------------"+msgType);
 			String resultText="";
-			if(MessageUtil.MESSAGE_TEXT.equals(msgType)){//ÏûÏ¢ÀàĞÍÎªÎÄ±¾
+			if(MessageUtil.MESSAGE_TEXT.equals(msgType)){//æ¶ˆæ¯ç±»å‹ä¸ºæ–‡æœ¬
 				if("1".equals(content)){
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.firstMenu());
 				}
 				else if("2".equals(content)){
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.secondMenu());
-				}else if("3".equals(content)){//»Ø¸´Í¼Æ¬ÏûÏ¢
+				}else if("3".equals(content)){//å›å¤å›¾ç‰‡æ¶ˆæ¯
 					resultText=	 MessageUtil.intiImageMessage(toUserName, fromUserName, "7b15x9Nal08yDczjnfmfAwfS4-1r2YwyPqjWZGNCbAlm2so_b9bivaIkVUAxIkbn");
 				}
-				else if("4".equals(content)){//»Ø¸´Í¼Æ¬ÏûÏ¢
+				else if("4".equals(content)){//å›å¤å›¾ç‰‡æ¶ˆæ¯
 					resultText=	 MessageUtil.intiMusicMessage(toUserName, fromUserName, "cHpXTBznObL1Q2vv073PlUL55jVY_FkHXymp8tn7XY3FsAtCgEyjJjbl5-RB7wjC","http://gaohe1018.imwork.net/weixindemo/music/1.mp3");
 				}
-				else	if("*".equals(content)){//¹Ø¼ü×Ö»Ø¸´
+				else	if("*".equals(content)){//å…³é”®å­—å›å¤
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
 				}else{
 					TextMessage textMessage=new TextMessage();
 					 textMessage.setMsgType("text");
-					 textMessage.setContent("Äú·¢ËÍµÄÏûÏ¢:"+content);
+					 textMessage.setContent("æ‚¨å‘é€çš„æ¶ˆæ¯:"+content);
 					 textMessage.setFromUserName(toUserName);
 					 textMessage.setToUserName(fromUserName);
 					 textMessage.setCreateTime(String.valueOf(new Date().getTime()));
 					 resultText=MessageUtil.textMessageToXml(textMessage);				 
 						
-				} 
+				}  
 				
-				 System.out.println("---------------------------"+resultText);
-				
-				 			 
 				 
-			}else if(MessageUtil.MESSAGE_EVENT.equals(msgType)){//ÏûÏ¢ÀàĞÍÎªÊÂ¼ş
-				String eventType=map.get("Event");//»ñÈ¡ÊÂ¼şÀàĞÍ
+			}else if(MessageUtil.MESSAGE_IMAGE.equals(msgType)){//å›¾ç‰‡æ¶ˆæ¯
+				 String picUrl=map.get("PicUrl");//å›¾ç‰‡é“¾æ¥ï¼ˆç”±ç³»ç»Ÿç”Ÿæˆï¼‰
+				 String mediaId=map.get("MediaId");//å›¾ç‰‡æ¶ˆæ¯åª’ä½“idï¼Œå¯ä»¥è°ƒç”¨å¤šåª’ä½“æ–‡ä»¶ä¸‹è½½æ¥å£æ‹‰å–æ•°æ®ã€‚
+				 System.out.println("å›¾ç‰‡"+picUrl+"--------------"+mediaId);
+				 resultText=MessageUtil.intiImageMessage(toUserName, fromUserName, mediaId);
+			}
+			
+			
+			else if(MessageUtil.MESSAGE_EVENT.equals(msgType)){//æ¶ˆæ¯ç±»å‹ä¸ºäº‹ä»¶
+				String eventType=map.get("Event");//è·å–äº‹ä»¶ç±»å‹
 				if(MessageUtil.EVENT_SUBSCRIBE.equals(eventType)){
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());
+				}else if(MessageUtil.EVENT_CLICK.equals(eventType)){//æ•²å‡»äº‹ä»¶
+					String EventKey=map.get("EventKey");
+					resultText=MessageUtil.initText(toUserName, fromUserName, "æ•²å‡»äº‹ä»¶:EventKeyä¸º"+EventKey);
+				}else if(MessageUtil.EVENT_VIEW.equals(eventType)){//viewäº‹ä»¶
+					String url = map.get("EventKey");
+					resultText = MessageUtil.initText(toUserName, fromUserName, url); 
+					
+				}else if(MessageUtil.MESSAGE_SCANCODE.equals(eventType)){
+					String key = map.get("EventKey");
+					resultText = MessageUtil.initText(toUserName, fromUserName, key);
 				}
+			}else if(MessageUtil.MESSAGE_LOCATION.equals(msgType)){
+				String label = map.get("Label");
+				resultText = MessageUtil.initText(toUserName, fromUserName, label);
 			}
+			 System.out.println("---------------------------"+resultText); 
 			out.print(resultText);
 			
 		} catch (DocumentException e) {
