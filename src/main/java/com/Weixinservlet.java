@@ -86,6 +86,11 @@ public class Weixinservlet extends HttpServlet {
 				}
 				else if("2".equals(content)){
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.secondMenu());
+				}else if("3".equals(content)){//回复图片消息
+					resultText=	 MessageUtil.intiImageMessage(toUserName, fromUserName, "7b15x9Nal08yDczjnfmfAwfS4-1r2YwyPqjWZGNCbAlm2so_b9bivaIkVUAxIkbn");
+				}
+				else if("4".equals(content)){//回复图片消息
+					resultText=	 MessageUtil.intiMusicMessage(toUserName, fromUserName, "cHpXTBznObL1Q2vv073PlUL55jVY_FkHXymp8tn7XY3FsAtCgEyjJjbl5-RB7wjC","http://gaohe1018.imwork.net/weixindemo/music/1.mp3");
 				}
 				else	if("*".equals(content)){//关键字回复
 					resultText=	 MessageUtil.initText(toUserName, fromUserName, MessageUtil.menuText());

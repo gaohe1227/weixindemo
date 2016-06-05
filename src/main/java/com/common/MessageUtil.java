@@ -14,6 +14,10 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
+import com.common.model.Image;
+import com.common.model.ImageMessage;
+import com.common.model.Music;
+import com.common.model.Musicmessage;
 import com.common.model.TextMessage;
 import com.thoughtworks.xstream.XStream;
 /**
@@ -28,6 +32,7 @@ import com.thoughtworks.xstream.XStream;
 public class MessageUtil {
 	public static final String MESSAGE_TEXT="text";//文本消息
 	public static final String MESSAGE_IMAGE="image";//图片消息
+	public static final String MESSAGE_MUSIC="music";//语音消息
 	public static final String MESSAGE_VOICE="voice";//语音消息
 	public static final String MESSAGE_VEDIO="vedio";//视频消息
 	public static final String MESSAGE_SHORTVIDEO="shortvideo";//小视频消息
@@ -111,5 +116,56 @@ public class MessageUtil {
 		buffer.append("慕课网学的");
 		 
 		return buffer.toString();
+	}
+	
+	/**
+	 * /**
+	 * 回复图片消息
+	 * @param picUrl:图片链接
+	 * @param MediaId:图片消息媒体id  
+	 * @param toUserName:公众号开发者
+	 * @param fromUserName :用户
+	 * @return
+	 */
+	public static String intiImageMessage(String toUserName,String fromUserName,  String mediaId){
+		Image iamge=new Image();
+		iamge.setMediaId(mediaId);
+		ImageMessage imageMessage=new ImageMessage();
+		imageMessage.setMsgType(MessageUtil.MESSAGE_IMAGE); 
+		imageMessage.setFromUserName(toUserName);
+		imageMessage.setToUserName(fromUserName);
+		imageMessage.setCreateTime(String.valueOf(new Date().getTime()));
+		imageMessage.setImage(iamge);
+		 XStream xStream=new XStream();
+		 xStream.alias("xml", ImageMessage.class);//将xml的根节点替换为xml
+		 return xStream.toXML(imageMessage);
+	}
+	/**
+	 * 回复音乐消息
+	 * @param toUserName:公众号开发者
+	 * @param fromUserName :用户
+	 * @param thumbMediaId:缩略图id
+	 * @param musicurl:音乐路径
+	 * @return
+	 */
+	public static String intiMusicMessage(String toUserName, String fromUserName, String thumbMediaId,String musicurl) {
+		// TODO Auto-generated method stub
+		 Music music=new Music();
+		 music.setDescription("用来测试的音乐");
+		 music.setMusicUrl(musicurl);
+		 music.setHQMusicUrl(musicurl);
+		 music.setThumbMediaId(thumbMediaId);
+		 music.setTitle("音乐主题");
+		 
+	 
+		 Musicmessage musicmessage=new Musicmessage(); 
+		 musicmessage.setMsgType(MessageUtil.MESSAGE_MUSIC); 
+		 musicmessage.setFromUserName(toUserName);
+		 musicmessage.setToUserName(fromUserName);
+		 musicmessage.setCreateTime(String.valueOf(new Date().getTime()));
+		 musicmessage.setMusic(music);
+		 XStream xStream=new XStream();
+		 xStream.alias("xml", Musicmessage.class);//将xml的根节点替换为xml
+		 return xStream.toXML(musicmessage);
 	}
 }
