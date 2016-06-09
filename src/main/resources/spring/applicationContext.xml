@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	default-lazy-init="false"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-4.2.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd">
+		<!-- 开启注解扫描 -->
+		 	<description>Spring公共配置 </description>
+
+	<!-- 使用annotation 自动注册bean, 并保证@Required、@Autowired的属性被注入 -->
+		<context:component-scan base-package="com.weixin" >
+			<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		    <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+		</context:component-scan>
+		
+			<!-- task任务扫描注解 --> 
+		<task:annotation-driven/> 
+			<!-- Tomcat JDBC连接池 -->
+	<bean id="dataSource" class="org.apache.tomcat.jdbc.pool.DataSource" destroy-method="close">
+		<!-- Connection Info -->
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+
+		<!-- Connection Pooling Info -->
+		<property name="maxActive" value="${jdbc.pool.maxActive}" />
+		<property name="maxIdle" value="${jdbc.pool.maxIdle}" />
+		<property name="minIdle" value="0" />
+		<property name="defaultAutoCommit" value="false" />
+	</bean>
+		<!-- 引入配置文件 -->
+	<context:property-placeholder  	ignore-resource-not-found="true" location="classpath*:/jdbc.properties" />
+		<!-- <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		自动扫描entity目录, 省掉Configuration.xml里的手工配置
+		显式指定Mapper文件位置
+		<property name="mapperLocations" value="classpath*:/mybatis/**/*Mapper.xml" />
+
+		<property name="configLocation" value="classpath:mybatis-config.xml" />
+	</bean>
+
+	扫描basePackage下所有以@MyBatisRepository标识的 接口
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.weixin" />
+		<property name="annotationClass" value="com.weixin.base.dao.MyBatisRepository" />
+	</bean>
+    <bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.**.mapper"/>
+		<property name="properties">
+			<value>
+				mappers=tk.mybatis.mapper.common.Mapper
+			</value>
+		</property>
+	</bean> -->
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean> 
+	<!-- 使用解方式定义事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" /> 
+</beans>

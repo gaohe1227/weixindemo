@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weixin.user.dao.UserDao">
+	<resultMap id="BaseResultMap" type="com.weixin.user.model.User">
+		<result column="id" property="id" jdbcType="VARCHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="lastlogintime" property="lastlogintime" jdbcType="TIMESTAMP" />
+		<result column="openid" property="openid" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		 id as id,
+		 username as username,
+		 lastlogintime as lastlogintime,
+		 openid as openid
+	</sql>
+
+	<sql id="Base_Where_Clause">
+		<where>
+			<trim prefixOverrides="and|or">
+				<if test="id != null"> and id = #{id}</if>
+				<if test="username != null"> and username = #{username}</if>
+				<if test="lastlogintime != null"> and lastlogintime = #{lastlogintime}</if>
+				<if test="openid != null"> and openid = #{openid}</if>
+				<if test="searchWhere != null"> ${searchWhere}</if>
+			</trim>
+		</where>
+		<if test="page != null">
+			limit ${page.first}, ${page.size}
+		</if>
+	</sql> 
+
+	<select id="selectCount" resultType="java.lang.Long" parameterType="java.util.Map">
+		select count(id) from user
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<select id="selectList" resultMap="BaseResultMap" parameterType="java.util.Map">
+		select
+		<include refid="Base_Column_List"/>
+		from user
+		<include refid="Base_Where_Clause" />
+	</select>
+
+	<select id="selectById" resultMap="BaseResultMap" parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List"/>
+		from user
+		where id = #{id}
+	</select>
+
+	<delete id="deleteById" parameterType="java.lang.String">
+		delete from user
+		where id = #{id}
+	</delete>
+
+	<delete id="delete" parameterType="java.util.Map">
+		delete from user
+		<include refid="Base_Where_Clause" />
+	</delete>
+
+	<insert id="insert" parameterType="com.weixin.user.model.User">
+		insert into user(
+			id,
+			username,
+			lastlogintime,
+			openid
+		)
+		values(
+			#{id,jdbcType=VARCHAR},
+			#{username,jdbcType=VARCHAR},
+			#{lastlogintime,jdbcType=TIMESTAMP},
+			#{openid,jdbcType=VARCHAR}
+		)		
+	</insert>
+
+	<update id="updateById" parameterType="com.weixin.user.model.User">
+		update user 
+		set id=			#{id,jdbcType=VARCHAR},
+		username=			#{username,jdbcType=VARCHAR},
+		lastlogintime=			#{lastlogintime,jdbcType=TIMESTAMP},
+		openid=			#{openid,jdbcType=VARCHAR}
+		where id = #{id}
+	</update>
+
+	<update id="updateByIdSelective" parameterType="com.weixin.user.model.User">
+		update user 
+ 		<set>
+			<if test="id != null">id = #{id,jdbcType=VARCHAR},</if>
+			<if test="username != null">username = #{username,jdbcType=VARCHAR},</if>
+			<if test="lastlogintime != null">lastlogintime = #{lastlogintime,jdbcType=TIMESTAMP},</if>
+			<if test="openid != null">openid = #{openid,jdbcType=VARCHAR},</if>
+		</set>
+		where id = #{id}
+	</update>
+
+</mapper>

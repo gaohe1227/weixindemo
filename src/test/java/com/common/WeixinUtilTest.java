@@ -4,13 +4,23 @@ import java.io.IOException;
 import java.security.KeyManagementException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.util.HashMap;
+import java.util.Map;
 
 import com.alibaba.fastjson.JSONObject;
+import com.common.model.TemplateMessage;
+import com.common.model.TemplateMessageData;
 
 public class WeixinUtilTest {
 	public static void main(String[] args) {
 		AccessToken accessToken = WeixinUtil.getAccessToken();
 		createMenue(accessToken.getAccess_token());
+		
+		//deleteMenue(accessToken.getAccess_token());
+		/*testTemplateMessage(accessToken.getAccess_token());
+		System.out.println("------------------------------------------------------------------");
+		createusergroup(accessToken.getAccess_token());*/
+		//createMenue(accessToken.getAccess_token());
 		//createMenue(accessToken.getAccess_token());
 		//System.out.println("测试图片上传");
 		//queryMenue(accessToken.getAccess_token());
@@ -58,5 +68,32 @@ public class WeixinUtilTest {
 		 System.out.println("\n"+result);
 
 	}
-
+      
+	
+	public static void testTemplateMessage(String token){
+		TemplateMessage t=new TemplateMessage();
+		t.setTouser("oQQNSwilAEyVyP6yzq9057EFiWOE");
+		t.setTemplate_id("UKvkOi68HThrGLFkJfQ5GsJD8ObvYpXj5Pa6CpzJdQY");
+		t.setUrl("www.baidu.com");
+	 
+		 Map<String, TemplateMessageData> data = new HashMap<String, TemplateMessageData>();
+		 data.put("t1", new TemplateMessageData("恭喜你购买成功","#173177"));
+		 data.put("t2", new TemplateMessageData("巧克力","#173177"));
+		 t.setData(data);
+		WeixinUtil.sendTemplateMessage(t, token);//测试模板消息
+	}
+	
+	public static void createusergroup(String token){ 
+	JSONObject jsonObject=	WeixinUtil.createusergroup( token);//测试创建用户组
+	System.out.println(jsonObject);
+	System.out.println("查询");
+	try {
+		jsonObject=WeixinUtil.queryusergroup(token);
+		System.out.println(jsonObject);
+	} catch (IOException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}//测试查询用户组
+	}
+	
 }

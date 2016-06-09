@@ -28,7 +28,9 @@ import com.alibaba.fastjson.JSONObject;
 import com.common.model.Button;
 import com.common.model.ClickButton;
 import com.common.model.Menu;
+import com.common.model.TemplateMessage;
 import com.common.model.ViewButton;
+import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
 
 /**
   * 
@@ -40,13 +42,17 @@ import com.common.model.ViewButton;
   *
   */
 public class WeixinUtil {
-	private static final String APPID="wxace26c73dbbcbfdc";
-	private static final String APPSECRET="fc5a1e018bec46954a0147885f7cd1af";
-	private static final String ACCESS_TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
-	private static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";//新增临时素材接口
-	private static final String CREATE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
-	private static final String QUERY_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
-	private static final String DELETE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	public static final String APPID="wxace26c73dbbcbfdc";
+	public static final String APPSECRET="fc5a1e018bec46954a0147885f7cd1af";
+	public static final String ACCESS_TOKEN_URL="https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=APPID&secret=APPSECRET";
+	public static final String UPLOAD_URL = "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=ACCESS_TOKEN&type=TYPE";//新增临时素材接口
+	public static final String CREATE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/create?access_token=ACCESS_TOKEN";
+	public static final String QUERY_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/get?access_token=ACCESS_TOKEN";
+	public static final String DELETE_MENU_URL="https://api.weixin.qq.com/cgi-bin/menu/delete?access_token=ACCESS_TOKEN";
+	public static final String SEND_TEMPLET_MESSGAE_URL="https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";//发送模板消息接口
+	
+	public static final String CREATE_USERGROUP_URL="https://api.weixin.qq.com/cgi-bin/groups/create?access_token=ACCESS_TOKEN";//创建用户分组接口
+	public static final String QUERY_USERGROUP_URL="https://api.weixin.qq.com/cgi-bin/groups/get?access_token=ACCESS_TOKEN";//查询用户分组接口
 	/**
 	 * get请求
 	 * @param urlStr：url路径
@@ -61,8 +67,7 @@ public class WeixinUtil {
           HttpGet httpget = new HttpGet(urlStr);  
           System.out.println("executing request " + httpget.getURI());
           JSONObject jsonObject=null;
-          // 执行post请求.    
-     
+          // 执行get请求.     
 			CloseableHttpResponse response = httpclient.execute(httpget);
 			 // 获取响应实体    
             HttpEntity entity = response.getEntity();  
@@ -94,7 +99,7 @@ public class WeixinUtil {
           // 执行post请求.    
           try {
         	  httpPost.setEntity(new StringEntity(outStr,"UTF-8"));
-			CloseableHttpResponse response = httpclient.execute(httpPost);
+			CloseableHttpResponse response = httpclient.execute(httpPost);// 执行post请求.
 			 // 获取响应实体    
             HttpEntity entity = response.getEntity();  
             System.out.println(response.getStatusLine());    // 打印响应状态    
@@ -246,7 +251,7 @@ public class WeixinUtil {
 		ViewButton button21 = new ViewButton();
 		button21.setName("view菜单");
 		button21.setType("view");
-		button21.setUrl("http://www.imooc.com");
+		button21.setUrl("http://gaohe1018.imwork.net/weixindemo/test");
 		
 		ClickButton button31 = new ClickButton();
 		button31.setName("扫码事件");
@@ -313,4 +318,75 @@ public class WeixinUtil {
 		}
 		return null;
 	}
+	/**
+	 * 发送模板消息
+	 * @param templateMessage:消息
+	 * @param token:token
+	 * @return
+	 */
+	public static JSONObject sendTemplateMessage(TemplateMessage templateMessage,String token){ 
+		  
+		  
+		  CloseableHttpClient httpclient = HttpClients.createDefault();//创建HttpClient对象
+		  String url=SEND_TEMPLET_MESSGAE_URL.replace("ACCESS_TOKEN", token);
+		  // 创建httppost.    
+          HttpPost httpPost = new HttpPost(url);  
+          System.out.println("executing request " + httpPost.getURI());
+          JSONObject jsonObject=null;
+          // 执行post请求.    
+          try {
+        	 String outStr=JSONObject.toJSONString(templateMessage); 
+        	  httpPost.setEntity(new StringEntity(outStr,"UTF-8"));
+			CloseableHttpResponse response = httpclient.execute(httpPost);
+			 // 获取响应实体    
+            HttpEntity entity = response.getEntity();  
+            System.out.println(response.getStatusLine());    // 打印响应状态    
+            if (entity != null) {  
+                // 打印响应内容长度    
+                System.out.println("回文长度: " + entity.getContentLength());  
+                // 打印响应内容    
+                String result= EntityUtils.toString(entity,"UTF-8");
+              
+                jsonObject= JSONObject.parseObject(result); 
+            }   
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+          System.out.println("***********"+jsonObject);
+		return jsonObject; 
+		  
+		  
+	}
+	/**
+	 * 创建用户组
+	 * @param token
+	 * @return
+	 */
+	public static JSONObject createusergroup(String token){  
+	 
+		  String url=CREATE_USERGROUP_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject  =doPostStr(url, "{\"group\":{\"name\":\"test\"}}");
+		  
+		return jsonObject;  
+		  
+	}
+	/**
+	 * 查询用户组
+	 * @param token
+	 * @return
+	 * @throws IOException 
+	 * @throws ClientProtocolException 
+	 */
+	public static JSONObject queryusergroup(String token) throws ClientProtocolException, IOException{  
+	 
+		  String url=QUERY_USERGROUP_URL.replace("ACCESS_TOKEN", token);
+		JSONObject jsonObject  =doGetStr(url);		  
+		return jsonObject;  
+		  
+	}
+ 
+	
+	
+	
 }
